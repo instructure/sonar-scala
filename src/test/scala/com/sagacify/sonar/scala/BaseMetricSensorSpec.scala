@@ -16,7 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.batch.SensorContext;
 import org.sonar.api.batch.fs.internal.DefaultFileSystem;
-import org.sonar.api.config.Settings;
+import org.sonar.api.config.MapSettings;
 import org.sonar.api.measures.{CoreMetrics => CM}
 import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.Metric;
@@ -28,7 +28,7 @@ class ScalaSensorSpec extends FlatSpec with Matchers {
 
   val NUMBER_OF_FILES = 3;
 
-  val scala = new Scala(new Settings())
+  val scala = new Scala(new MapSettings())
 
   def context = new {
     val fs = new DefaultFileSystem(Paths.get("./src/test/resources"))
@@ -38,7 +38,7 @@ class ScalaSensorSpec extends FlatSpec with Matchers {
 
   // val project = mock(classOf[Project])
   // val sensorContext = mock(classOf[SensorContext])
-  // val sensor = new BaseMetricsSensor(new Scala(new Settings()), fs)
+  // val sensor = new BaseMetricsSensor(new Scala(new MapSettings()), fs)
 
   "A ScalaSensor" should "execute on a scala project" in {
     val c = context

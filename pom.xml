@@ -51,7 +51,7 @@
   </issueManagement>
 
   <properties>
-    <sonar.version>5.4</sonar.version>
+    <sonar.version>6.2</sonar.version>
     <sonar.pluginKey>scala</sonar.pluginKey>
     <sonar.pluginName>Scala</sonar.pluginName>
     <sonar.pluginClass>com.sagacify.sonar.scala.ScalaPlugin</sonar.pluginClass>
@@ -96,6 +96,12 @@
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
       <version>3.0.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>18.0</version>
     </dependency>
 
     <dependency>
