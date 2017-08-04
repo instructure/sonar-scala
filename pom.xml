@@ -51,7 +51,7 @@
   </issueManagement>
 
   <properties>
-    <sonar.version>6.2</sonar.version>
+    <sonar.version>6.4</sonar.version>
     <sonar.pluginKey>scala</sonar.pluginKey>
     <sonar.pluginName>Scala</sonar.pluginName>
     <sonar.pluginClass>com.sagacify.sonar.scala.ScalaPlugin</sonar.pluginClass>
