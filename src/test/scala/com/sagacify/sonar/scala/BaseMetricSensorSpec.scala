@@ -22,7 +22,7 @@ import org.sonar.api.measures.Measure;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.resources.Project;
 
-import org.sonar.api.batch.fs.internal.DefaultInputFile;
+import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 
 class ScalaSensorSpec extends FlatSpec with Matchers {
 
@@ -31,6 +31,7 @@ class ScalaSensorSpec extends FlatSpec with Matchers {
   val scala = new Scala(new MapSettings())
 
   def context = new {
+    val fileRoot = Paths.get("./src/test/resources")
     val fs = new DefaultFileSystem(Paths.get("./src/test/resources"))
     val project = mock(classOf[Project])
     val sensor = new ScalaSensor(scala, fs)
@@ -42,20 +43,21 @@ class ScalaSensorSpec extends FlatSpec with Matchers {
 
   "A ScalaSensor" should "execute on a scala project" in {
     val c = context
-    c.fs.add(new DefaultInputFile("p", "fake.scala").setLanguage("scala"));
+    c.fs.add(new TestInputFileBuilder("p", "fake.scala").setLanguage("scala").build);
     assert(c.sensor.shouldExecuteOnProject(c.project))
   }
 
   it should "only execute on a scala project" in {
     val c = context
-    c.fs.add(new DefaultInputFile("p", "fake.php").setLanguage("php"));
+    c.fs.add(new TestInputFileBuilder("p", "fake.php").setLanguage("php").build());
     assert(! c.sensor.shouldExecuteOnProject(c.project))
   }
 
   it should "correctly measure ScalaFile1" in {
     val c = context
     c.fs.add(
-      new DefaultInputFile("p", "ScalaFile1.scala").setLanguage("scala"));
+      new TestInputFileBuilder("p", "ScalaFile1.scala")
+        .setModuleBaseDir(c.fileRoot).setLanguage("scala").build());
     val sensorContext = mock(classOf[SensorContext])
     c.sensor.analyse(c.project, sensorContext)
 
@@ -64,18 +66,20 @@ class ScalaSensorSpec extends FlatSpec with Matchers {
 
     inputFiles.foreach{ file =>
       verify(sensorContext, times(1))
-          .saveMeasure(file, CM.FILES, 1)
+          .saveMeasure(file, CM.FILES, 1.0)
       verify(sensorContext, times(1))
-          .saveMeasure(file, CM.COMMENT_LINES, 0)
+          .saveMeasure(file, CM.COMMENT_LINES, 0.0)
 
     }
   }
 
   it should "correctly measure ScalaFile2" in {
 
+
     val c = context
     c.fs.add(
-      new DefaultInputFile("p", "ScalaFile2.scala").setLanguage("scala"));
+      new TestInputFileBuilder("p", "ScalaFile2.scala")
+          .setModuleBaseDir(c.fileRoot).setLanguage("scala").build());
     val sensorContext = mock(classOf[SensorContext])
     c.sensor.analyse(c.project, sensorContext)
 
@@ -84,9 +88,9 @@ class ScalaSensorSpec extends FlatSpec with Matchers {
 
     inputFiles.foreach{ file =>
       verify(sensorContext, times(1))
-          .saveMeasure(file, CM.FILES, 1)
+          .saveMeasure(file, CM.FILES, 1.0)
       verify(sensorContext, times(1))
-          .saveMeasure(file, CM.COMMENT_LINES, 1)
+          .saveMeasure(file, CM.COMMENT_LINES, 1.0)
 
     }
   }
